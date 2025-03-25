@@ -17,9 +17,6 @@ import java.net.URL;
 @RestController
 public class HelloController {
 
-    @Autowired
-    private HelloServiceFactory factory;
-
     @Value("${cloud.env}")
     private String envMark;
 
@@ -27,21 +24,7 @@ public class HelloController {
     public JsonResponse hello(@RequestParam(value = "target", defaultValue = "mongodb") String target) {
         JsonResponse response = new JsonResponse();
         try {
-            HelloService helloService = factory.getHelloService(target);
-            response.success("env:" + envMark + " hello " + helloService.hello(target));
-        } catch (Exception e) {
-            response.failure("unknown error");
-        }
-        return response;
-    }
-
-    @PostMapping("/api/set_name")
-    public JsonResponse setName(@RequestBody SetNameRequest setNameRequest) {
-        JsonResponse response = new JsonResponse();
-        try {
-            HelloService helloService = factory.getHelloService(setNameRequest.getTarget());
-            helloService.setName(setNameRequest.getTarget(), setNameRequest.getName());
-            response.success("");
+            response.success("env:" + envMark + " hello");
         } catch (Exception e) {
             response.failure("unknown error");
         }

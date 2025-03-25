@@ -7,12 +7,16 @@ import com.bytedance.douyinclouddemo.service.impl.HelloServiceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class HelloController {
 
     @Autowired
     private HelloServiceFactory factory;
+
+    @Autowired
+    private RestTemplate restTemplate; // 注入RestTemplate
 
     @Value("${cloud.env}")
     private String envMark;
@@ -38,6 +42,19 @@ public class HelloController {
             response.success("");
         }catch (Exception e){
             response.failure("unknown error");
+        }
+        return response;
+    }
+
+    // 新增的路由
+    @GetMapping("/api/fetch_url")
+    public JsonResponse fetchUrl(@RequestParam String url) {
+        JsonResponse response = new JsonResponse();
+        try {
+            String result = restTemplate.getForObject(url, String.class);
+            response.success(result);
+        } catch (Exception e) {
+            response.failure("Failed to fetch URL: " + e.getMessage());
         }
         return response;
     }

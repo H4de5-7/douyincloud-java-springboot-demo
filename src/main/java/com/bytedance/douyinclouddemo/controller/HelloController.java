@@ -3,7 +3,6 @@ package com.bytedance.douyinclouddemo.controller;
 import com.bytedance.douyinclouddemo.model.JsonResponse;
 import com.bytedance.douyinclouddemo.model.SetNameRequest;
 import com.bytedance.douyinclouddemo.service.HelloService;
-import com.bytedance.douyinclouddemo.service.impl.HelloServiceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;

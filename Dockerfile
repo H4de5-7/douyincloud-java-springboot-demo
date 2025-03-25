@@ -1,18 +1,11 @@
-FROM public-cn-beijing.cr.volces.com/public/base:maven-3.6.0-jdk-8-slim as build
 
-# 指定构建过程中的工作目录
-WORKDIR /opt/application
-# 将当前目录（dockerfile所在目录）下所有文件都拷贝到工作目录下（.dockerignore中文件除外）
-COPY . .
+# 复制 nginx 配置文件
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# 拉取公网依赖较慢，容易失败，建议在settings.xml中更换依赖源
-RUN mvn -s /opt/application/settings.xml -f /opt/application/pom.xml clean package
+# 创建 run.sh 文件并添加启动 Nginx 的命令
+RUN mkdir -p /opt/application && \
+    printf '#!/bin/sh\nnginx -g "daemon off;"\n' > /opt/application/run.sh && \
+    chmod +x /opt/application/run.sh
 
-# 将构建产物jar包拷贝到运行时目录中
-RUN chmod -R 777 /opt/application/run.sh
-
-EXPOSE 8000
-
-CMD ["sh","/opt/application/run.sh"]
-
-
+# 设置默认命令为运行 run.sh
+CMD ["/opt/application/run.sh"]

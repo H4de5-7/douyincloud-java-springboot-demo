@@ -9,7 +9,5 @@ RUN mkdir -p /opt/application && \
     echo '#!/bin/sh\nnginx -g "daemon off;"' > /opt/application/run.sh && \
     chmod +x /opt/application/run.sh
 
-EXPOSE 8000
-
 # 设置默认命令为运行 run.sh
 CMD ["sh","/opt/application/run.sh"]
